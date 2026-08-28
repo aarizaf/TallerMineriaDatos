@@ -1,0 +1,54 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  body { margin:0; padding:0; background:white; font-family: Consolas, Menlo, monospace; }
+  .cellbox {
+    border: 1px solid #cfd8dc;
+    border-left: 4px solid #4C72B0;
+    border-radius: 4px;
+    width: fit-content;
+    max-width: 1400px;
+  }
+  .prompt {
+    background:#f5f7fa;
+    color:#4C72B0;
+    font-size:13px;
+    padding:4px 10px;
+    border-bottom:1px solid #e0e6ec;
+    font-family: Consolas, Menlo, monospace;
+  }
+  pre {
+    margin:0;
+    padding:10px 14px;
+    font-size:14px;
+    line-height:1.4;
+    white-space: pre;
+  }
+</style></head>
+<body>
+<div class="cellbox">
+  <div class="prompt">In [14]:</div>
+  <div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%;"><span></span><span style="color: #3D7B7B; font-style: italic"># Ejemplo sintético de 6 canastas, calculable manualmente</span>
+canastas_ejemplo <span style="color: #666">=</span> [
+    <span style="color: #008000">frozenset</span>([<span style="color: #BA2121">"pan"</span>, <span style="color: #BA2121">"leche"</span>, <span style="color: #BA2121">"huevos"</span>]),
+    <span style="color: #008000">frozenset</span>([<span style="color: #BA2121">"pan"</span>, <span style="color: #BA2121">"leche"</span>]),
+    <span style="color: #008000">frozenset</span>([<span style="color: #BA2121">"pan"</span>, <span style="color: #BA2121">"pañales"</span>, <span style="color: #BA2121">"cerveza"</span>]),
+    <span style="color: #008000">frozenset</span>([<span style="color: #BA2121">"leche"</span>, <span style="color: #BA2121">"pañales"</span>, <span style="color: #BA2121">"cerveza"</span>]),
+    <span style="color: #008000">frozenset</span>([<span style="color: #BA2121">"pan"</span>, <span style="color: #BA2121">"leche"</span>, <span style="color: #BA2121">"pañales"</span>, <span style="color: #BA2121">"cerveza"</span>]),
+    <span style="color: #008000">frozenset</span>([<span style="color: #BA2121">"pan"</span>, <span style="color: #BA2121">"leche"</span>, <span style="color: #BA2121">"pañales"</span>]),
+]
+
+<span style="color: #3D7B7B; font-style: italic"># Con min_support=3 (soporte &gt;= 3 de 6 canastas):</span>
+<span style="color: #3D7B7B; font-style: italic"># Conteos individuales -&gt; pan:5, leche:5, pañales:4, cerveza:3, huevos:1</span>
+<span style="color: #3D7B7B; font-style: italic"># L1 esperado (soporte&gt;=3): {pan, leche, pañales, cerveza}</span>
+<span style="color: #3D7B7B; font-style: italic"># Pares con soporte&gt;=3 (contados a mano): (pan,leche)=4, (pan,pañales)=3,</span>
+<span style="color: #3D7B7B; font-style: italic">#   (leche,pañales)=3, (pañales,cerveza)=3</span>
+<span style="color: #3D7B7B; font-style: italic"># L2 esperado: esos 4 pares</span>
+freq_ejemplo, candidatos_ejemplo <span style="color: #666">=</span> apriori(canastas_ejemplo, min_support<span style="color: #666">=3</span>, max_k<span style="color: #666">=4</span>)
+
+<span style="color: #008000; font-weight: bold">for</span> k <span style="color: #A2F; font-weight: bold">in</span> <span style="color: #008000">sorted</span>(freq_ejemplo):
+    <span style="color: #008000">print</span>(<span style="color: #BA2121">f"L</span><span style="color: #A45A77; font-weight: bold">{</span>k<span style="color: #A45A77; font-weight: bold">}</span><span style="color: #BA2121">:"</span>, {<span style="color: #008000">tuple</span>(<span style="color: #008000">sorted</span>(iset)): cnt <span style="color: #008000; font-weight: bold">for</span> iset, cnt <span style="color: #A2F; font-weight: bold">in</span> freq_ejemplo[k]<span style="color: #666">.</span>items()})
+</pre></div>
+
+</div>
+</body></html>

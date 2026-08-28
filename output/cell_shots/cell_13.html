@@ -1,0 +1,110 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  body { margin:0; padding:0; background:white; font-family: Consolas, Menlo, monospace; }
+  .cellbox {
+    border: 1px solid #cfd8dc;
+    border-left: 4px solid #4C72B0;
+    border-radius: 4px;
+    width: fit-content;
+    max-width: 1400px;
+  }
+  .prompt {
+    background:#f5f7fa;
+    color:#4C72B0;
+    font-size:13px;
+    padding:4px 10px;
+    border-bottom:1px solid #e0e6ec;
+    font-family: Consolas, Menlo, monospace;
+  }
+  pre {
+    margin:0;
+    padding:10px 14px;
+    font-size:14px;
+    line-height:1.4;
+    white-space: pre;
+  }
+</style></head>
+<body>
+<div class="cellbox">
+  <div class="prompt">In [13]:</div>
+  <div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%;"><span></span><span style="color: #008000; font-weight: bold">import</span><span style="color: #BBB"> </span><span style="color: #00F; font-weight: bold">math</span>
+<span style="color: #008000; font-weight: bold">from</span><span style="color: #BBB"> </span><span style="color: #00F; font-weight: bold">collections</span><span style="color: #BBB"> </span><span style="color: #008000; font-weight: bold">import</span> defaultdict
+<span style="color: #008000; font-weight: bold">from</span><span style="color: #BBB"> </span><span style="color: #00F; font-weight: bold">itertools</span><span style="color: #BBB"> </span><span style="color: #008000; font-weight: bold">import</span> combinations
+
+
+<span style="color: #008000; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #00F">generate_candidates</span>(prev_itemsets, k):
+<span style="color: #BBB">    </span><span style="color: #BA2121; font-style: italic">"""Genera candidatos Ck a partir de Lk-1 (join + poda por subconjuntos)."""</span>
+    prev_set <span style="color: #666">=</span> <span style="color: #008000">set</span>(prev_itemsets)
+    sorted_prev <span style="color: #666">=</span> [<span style="color: #008000">tuple</span>(<span style="color: #008000">sorted</span>(iset)) <span style="color: #008000; font-weight: bold">for</span> iset <span style="color: #A2F; font-weight: bold">in</span> prev_itemsets]
+    candidates <span style="color: #666">=</span> <span style="color: #008000">set</span>()
+    n <span style="color: #666">=</span> <span style="color: #008000">len</span>(sorted_prev)
+    <span style="color: #008000; font-weight: bold">for</span> i <span style="color: #A2F; font-weight: bold">in</span> <span style="color: #008000">range</span>(n):
+        <span style="color: #008000; font-weight: bold">for</span> j <span style="color: #A2F; font-weight: bold">in</span> <span style="color: #008000">range</span>(i <span style="color: #666">+</span> <span style="color: #666">1</span>, n):
+            a, b <span style="color: #666">=</span> sorted_prev[i], sorted_prev[j]
+            <span style="color: #008000; font-weight: bold">if</span> a[: k <span style="color: #666">-</span> <span style="color: #666">2</span>] <span style="color: #666">==</span> b[: k <span style="color: #666">-</span> <span style="color: #666">2</span>]:
+                candidate <span style="color: #666">=</span> <span style="color: #008000">frozenset</span>(a) <span style="color: #666">|</span> <span style="color: #008000">frozenset</span>(b)
+                <span style="color: #008000; font-weight: bold">if</span> <span style="color: #008000">len</span>(candidate) <span style="color: #666">==</span> k:
+                    <span style="color: #008000; font-weight: bold">if</span> <span style="color: #008000">all</span>(<span style="color: #008000">frozenset</span>(c) <span style="color: #A2F; font-weight: bold">in</span> prev_set <span style="color: #008000; font-weight: bold">for</span> c <span style="color: #A2F; font-weight: bold">in</span> combinations(candidate, k <span style="color: #666">-</span> <span style="color: #666">1</span>)):
+                        candidates<span style="color: #666">.</span>add(candidate)
+    <span style="color: #008000; font-weight: bold">return</span> candidates
+
+
+<span style="color: #008000; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #00F">apriori</span>(baskets, min_support, max_k<span style="color: #666">=4</span>):
+<span style="color: #BBB">    </span><span style="color: #BA2121; font-style: italic">"""</span>
+<span style="color: #BA2121; font-style: italic">    Algoritmo A-Priori.</span>
+
+<span style="color: #BA2121; font-style: italic">    baskets: lista de frozensets</span>
+<span style="color: #BA2121; font-style: italic">    min_support: soporte mínimo absoluto (número de baskets)</span>
+<span style="color: #BA2121; font-style: italic">    max_k: tamaño máximo de itemsets a buscar</span>
+
+<span style="color: #BA2121; font-style: italic">    Retorna: dict {k: {frozenset: count}}</span>
+<span style="color: #BA2121; font-style: italic">    """</span>
+    freq <span style="color: #666">=</span> {}
+    candidates_count <span style="color: #666">=</span> {}
+
+    <span style="color: #3D7B7B; font-style: italic"># Pasada 1: contar ítems individuales</span>
+    item_counts <span style="color: #666">=</span> defaultdict(<span style="color: #008000">int</span>)
+    <span style="color: #008000; font-weight: bold">for</span> b <span style="color: #A2F; font-weight: bold">in</span> baskets:
+        <span style="color: #008000; font-weight: bold">for</span> item <span style="color: #A2F; font-weight: bold">in</span> b:
+            item_counts[item] <span style="color: #666">+=</span> <span style="color: #666">1</span>
+    C1 <span style="color: #666">=</span> {<span style="color: #008000">frozenset</span>([item]): cnt <span style="color: #008000; font-weight: bold">for</span> item, cnt <span style="color: #A2F; font-weight: bold">in</span> item_counts<span style="color: #666">.</span>items()}
+    candidates_count[<span style="color: #666">1</span>] <span style="color: #666">=</span> <span style="color: #008000">len</span>(C1)
+
+    L1 <span style="color: #666">=</span> {iset: cnt <span style="color: #008000; font-weight: bold">for</span> iset, cnt <span style="color: #A2F; font-weight: bold">in</span> C1<span style="color: #666">.</span>items() <span style="color: #008000; font-weight: bold">if</span> cnt <span style="color: #666">&gt;=</span> min_support}
+    freq[<span style="color: #666">1</span>] <span style="color: #666">=</span> L1
+
+    k <span style="color: #666">=</span> <span style="color: #666">2</span>
+    Lk_minus_1 <span style="color: #666">=</span> L1
+    <span style="color: #008000; font-weight: bold">while</span> Lk_minus_1 <span style="color: #A2F; font-weight: bold">and</span> k <span style="color: #666">&lt;=</span> max_k:
+        prev_itemsets <span style="color: #666">=</span> <span style="color: #008000">list</span>(Lk_minus_1<span style="color: #666">.</span>keys())
+        items_in_prev <span style="color: #666">=</span> <span style="color: #008000">set</span>()
+        <span style="color: #008000; font-weight: bold">for</span> iset <span style="color: #A2F; font-weight: bold">in</span> prev_itemsets:
+            items_in_prev <span style="color: #666">|=</span> iset
+
+        Ck <span style="color: #666">=</span> generate_candidates(prev_itemsets, k)
+        candidates_count[k] <span style="color: #666">=</span> <span style="color: #008000">len</span>(Ck)
+        <span style="color: #008000; font-weight: bold">if</span> <span style="color: #A2F; font-weight: bold">not</span> Ck:
+            <span style="color: #008000; font-weight: bold">break</span>
+
+        counts <span style="color: #666">=</span> defaultdict(<span style="color: #008000">int</span>)
+        <span style="color: #008000; font-weight: bold">for</span> b <span style="color: #A2F; font-weight: bold">in</span> baskets:
+            reduced <span style="color: #666">=</span> b <span style="color: #666">&amp;</span> items_in_prev
+            <span style="color: #008000; font-weight: bold">if</span> <span style="color: #008000">len</span>(reduced) <span style="color: #666">&lt;</span> k:
+                <span style="color: #008000; font-weight: bold">continue</span>
+            <span style="color: #008000; font-weight: bold">for</span> combo <span style="color: #A2F; font-weight: bold">in</span> combinations(<span style="color: #008000">sorted</span>(reduced), k):
+                fs <span style="color: #666">=</span> <span style="color: #008000">frozenset</span>(combo)
+                <span style="color: #008000; font-weight: bold">if</span> fs <span style="color: #A2F; font-weight: bold">in</span> Ck:
+                    counts[fs] <span style="color: #666">+=</span> <span style="color: #666">1</span>
+
+        Lk <span style="color: #666">=</span> {iset: cnt <span style="color: #008000; font-weight: bold">for</span> iset, cnt <span style="color: #A2F; font-weight: bold">in</span> counts<span style="color: #666">.</span>items() <span style="color: #008000; font-weight: bold">if</span> cnt <span style="color: #666">&gt;=</span> min_support}
+        freq[k] <span style="color: #666">=</span> Lk
+
+        Lk_minus_1 <span style="color: #666">=</span> Lk
+        k <span style="color: #666">+=</span> <span style="color: #666">1</span>
+
+    <span style="color: #008000; font-weight: bold">return</span> freq, candidates_count
+</pre></div>
+
+</div>
+</body></html>

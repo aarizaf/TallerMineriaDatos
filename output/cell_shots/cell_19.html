@@ -1,0 +1,90 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  body { margin:0; padding:0; background:white; font-family: Consolas, Menlo, monospace; }
+  .cellbox {
+    border: 1px solid #cfd8dc;
+    border-left: 4px solid #4C72B0;
+    border-radius: 4px;
+    width: fit-content;
+    max-width: 1400px;
+  }
+  .prompt {
+    background:#f5f7fa;
+    color:#4C72B0;
+    font-size:13px;
+    padding:4px 10px;
+    border-bottom:1px solid #e0e6ec;
+    font-family: Consolas, Menlo, monospace;
+  }
+  pre {
+    margin:0;
+    padding:10px 14px;
+    font-size:14px;
+    line-height:1.4;
+    white-space: pre;
+  }
+</style></head>
+<body>
+<div class="cellbox">
+  <div class="prompt">In [19]:</div>
+  <div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%;"><span></span><span style="color: #008000; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #00F">generate_rules</span>(freq, support, n_baskets,
+                    min_confidence<span style="color: #666">=0.5</span>,
+                    min_interest<span style="color: #666">=0.5</span>):
+<span style="color: #BBB">    </span><span style="color: #BA2121; font-style: italic">"""Genera reglas de asociacion A -&gt; B a partir</span>
+<span style="color: #BA2121; font-style: italic">    de itemsets frecuentes.</span>
+
+<span style="color: #BA2121; font-style: italic">    Parametros</span>
+<span style="color: #BA2121; font-style: italic">    ----------</span>
+<span style="color: #BA2121; font-style: italic">    freq : dict {k: {frozenset: int}}</span>
+<span style="color: #BA2121; font-style: italic">        Itemsets frecuentes agrupados por tamano k.</span>
+<span style="color: #BA2121; font-style: italic">    support : dict {frozenset: int}</span>
+<span style="color: #BA2121; font-style: italic">        Conteo absoluto para todo itemset frecuente</span>
+<span style="color: #BA2121; font-style: italic">        (incluyendo singletons).</span>
+<span style="color: #BA2121; font-style: italic">    n_baskets : int</span>
+<span style="color: #BA2121; font-style: italic">        Numero total de canastas.</span>
+<span style="color: #BA2121; font-style: italic">    min_confidence : float, default 0.5</span>
+<span style="color: #BA2121; font-style: italic">        Umbral minimo de confianza.</span>
+<span style="color: #BA2121; font-style: italic">    min_interest : float, default 0.5</span>
+<span style="color: #BA2121; font-style: italic">        Umbral minimo de interes.</span>
+
+<span style="color: #BA2121; font-style: italic">    Solo se retornan reglas cuya confianza &gt;= min_confidence</span>
+<span style="color: #BA2121; font-style: italic">    e interes &gt;= min_interest.</span>
+
+<span style="color: #BA2121; font-style: italic">    Retorna: pd.DataFrame con columnas:</span>
+<span style="color: #BA2121; font-style: italic">        antecedent, consequent, support, confidence,</span>
+<span style="color: #BA2121; font-style: italic">        lift, interest.</span>
+<span style="color: #BA2121; font-style: italic">    """</span>
+    rows <span style="color: #666">=</span> []
+    <span style="color: #008000; font-weight: bold">for</span> k, itemsets <span style="color: #A2F; font-weight: bold">in</span> freq<span style="color: #666">.</span>items():
+        <span style="color: #008000; font-weight: bold">if</span> k <span style="color: #666">&lt;</span> <span style="color: #666">2</span>:
+            <span style="color: #008000; font-weight: bold">continue</span>
+        <span style="color: #008000; font-weight: bold">for</span> I, count_I <span style="color: #A2F; font-weight: bold">in</span> itemsets<span style="color: #666">.</span>items():
+            items <span style="color: #666">=</span> <span style="color: #008000">list</span>(I)
+            <span style="color: #008000; font-weight: bold">for</span> r <span style="color: #A2F; font-weight: bold">in</span> <span style="color: #008000">range</span>(<span style="color: #666">1</span>, <span style="color: #008000">len</span>(items)):
+                <span style="color: #008000; font-weight: bold">for</span> a_tuple <span style="color: #A2F; font-weight: bold">in</span> combinations(items, r):
+                    A <span style="color: #666">=</span> <span style="color: #008000">frozenset</span>(a_tuple)
+                    B <span style="color: #666">=</span> I <span style="color: #666">-</span> A
+                    <span style="color: #008000; font-weight: bold">if</span> <span style="color: #A2F; font-weight: bold">not</span> B:
+                        <span style="color: #008000; font-weight: bold">continue</span>
+                    count_A <span style="color: #666">=</span> support[A]
+                    count_B <span style="color: #666">=</span> support[B]
+                    confidence <span style="color: #666">=</span> count_I <span style="color: #666">/</span> count_A
+                    supp <span style="color: #666">=</span> count_I <span style="color: #666">/</span> n_baskets
+                    p_b <span style="color: #666">=</span> count_B <span style="color: #666">/</span> n_baskets
+                    lift <span style="color: #666">=</span> confidence <span style="color: #666">/</span> p_b
+                    interest <span style="color: #666">=</span> <span style="color: #008000">abs</span>(confidence <span style="color: #666">-</span> p_b)
+                    <span style="color: #008000; font-weight: bold">if</span> confidence <span style="color: #666">&gt;=</span> min_confidence <span style="color: #A2F; font-weight: bold">and</span> interest <span style="color: #666">&gt;=</span> min_interest:
+                        rows<span style="color: #666">.</span>append({
+                            <span style="color: #BA2121">"antecedent"</span>: A,
+                            <span style="color: #BA2121">"consequent"</span>: B,
+                            <span style="color: #BA2121">"support"</span>: supp,
+                            <span style="color: #BA2121">"confidence"</span>: confidence,
+                            <span style="color: #BA2121">"lift"</span>: lift,
+                            <span style="color: #BA2121">"interest"</span>: interest,
+                        })
+    <span style="color: #008000; font-weight: bold">return</span> pd<span style="color: #666">.</span>DataFrame(rows)
+</pre></div>
+
+</div>
+</body></html>

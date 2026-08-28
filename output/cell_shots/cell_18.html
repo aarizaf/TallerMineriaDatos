@@ -1,0 +1,49 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  body { margin:0; padding:0; background:white; font-family: Consolas, Menlo, monospace; }
+  .cellbox {
+    border: 1px solid #cfd8dc;
+    border-left: 4px solid #4C72B0;
+    border-radius: 4px;
+    width: fit-content;
+    max-width: 1400px;
+  }
+  .prompt {
+    background:#f5f7fa;
+    color:#4C72B0;
+    font-size:13px;
+    padding:4px 10px;
+    border-bottom:1px solid #e0e6ec;
+    font-family: Consolas, Menlo, monospace;
+  }
+  pre {
+    margin:0;
+    padding:10px 14px;
+    font-size:14px;
+    line-height:1.4;
+    white-space: pre;
+  }
+</style></head>
+<body>
+<div class="cellbox">
+  <div class="prompt">In [18]:</div>
+  <div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%;"><span></span><span style="color: #3D7B7B; font-style: italic"># Top 15 pares frecuentes con mayor soporte, con descripción de productos</span>
+pairs <span style="color: #666">=</span> freq[<span style="color: #666">2</span>]
+top15 <span style="color: #666">=</span> <span style="color: #008000">sorted</span>(pairs<span style="color: #666">.</span>items(), key<span style="color: #666">=</span><span style="color: #008000; font-weight: bold">lambda</span> x: x[<span style="color: #666">1</span>], reverse<span style="color: #666">=</span><span style="color: #008000; font-weight: bold">True</span>)[:<span style="color: #666">15</span>]
+
+top15_rows <span style="color: #666">=</span> []
+<span style="color: #008000; font-weight: bold">for</span> iset, cnt <span style="color: #A2F; font-weight: bold">in</span> top15:
+    items <span style="color: #666">=</span> <span style="color: #008000">sorted</span>(iset)
+    top15_rows<span style="color: #666">.</span>append({
+        <span style="color: #BA2121">"Item A"</span>: items[<span style="color: #666">0</span>], <span style="color: #BA2121">"Descripción A"</span>: describe(items[<span style="color: #666">0</span>]),
+        <span style="color: #BA2121">"Item B"</span>: items[<span style="color: #666">1</span>], <span style="color: #BA2121">"Descripción B"</span>: describe(items[<span style="color: #666">1</span>]),
+        <span style="color: #BA2121">"Conteo"</span>: cnt, <span style="color: #BA2121">"Soporte"</span>: <span style="color: #008000">round</span>(cnt <span style="color: #666">/</span> n_baskets, <span style="color: #666">4</span>),
+    })
+
+top15_df <span style="color: #666">=</span> pd<span style="color: #666">.</span>DataFrame(top15_rows)
+top15_df
+</pre></div>
+
+</div>
+</body></html>

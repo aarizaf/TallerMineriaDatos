@@ -1,0 +1,49 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  body { margin:0; padding:0; background:white; font-family: Consolas, Menlo, monospace; }
+  .cellbox {
+    border: 1px solid #cfd8dc;
+    border-left: 4px solid #4C72B0;
+    border-radius: 4px;
+    width: fit-content;
+    max-width: 1400px;
+  }
+  .prompt {
+    background:#f5f7fa;
+    color:#4C72B0;
+    font-size:13px;
+    padding:4px 10px;
+    border-bottom:1px solid #e0e6ec;
+    font-family: Consolas, Menlo, monospace;
+  }
+  pre {
+    margin:0;
+    padding:10px 14px;
+    font-size:14px;
+    line-height:1.4;
+    white-space: pre;
+  }
+</style></head>
+<body>
+<div class="cellbox">
+  <div class="prompt">In [11]:</div>
+  <div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%;"><span></span>basket_sizes <span style="color: #666">=</span> baskets_series<span style="color: #666">.</span>apply(<span style="color: #008000">len</span>)
+
+plt<span style="color: #666">.</span>figure(figsize<span style="color: #666">=</span>(<span style="color: #666">10</span>, <span style="color: #666">6</span>))
+plt<span style="color: #666">.</span>hist(basket_sizes, bins<span style="color: #666">=50</span>, color<span style="color: #666">=</span><span style="color: #BA2121">"#4C72B0"</span>, edgecolor<span style="color: #666">=</span><span style="color: #BA2121">"black"</span>)
+plt<span style="color: #666">.</span>title(<span style="color: #BA2121">"Distribución del tamaño de las canastas (Online Retail II)"</span>)
+plt<span style="color: #666">.</span>xlabel(<span style="color: #BA2121">"Cantidad de ítems por canasta"</span>)
+plt<span style="color: #666">.</span>ylabel(<span style="color: #BA2121">"Frecuencia (número de canastas)"</span>)
+plt<span style="color: #666">.</span>tight_layout()
+plt<span style="color: #666">.</span>savefig(<span style="color: #BA2121">"basket_size_histogram.png"</span>, dpi<span style="color: #666">=150</span>)
+plt<span style="color: #666">.</span>show()
+
+<span style="color: #008000">print</span>(<span style="color: #BA2121">"Tamaño mínimo:  "</span>, basket_sizes<span style="color: #666">.</span>min())
+<span style="color: #008000">print</span>(<span style="color: #BA2121">"Tamaño máximo:  "</span>, basket_sizes<span style="color: #666">.</span>max())
+<span style="color: #008000">print</span>(<span style="color: #BA2121">"Tamaño promedio:"</span>, <span style="color: #008000">round</span>(basket_sizes<span style="color: #666">.</span>mean(), <span style="color: #666">2</span>))
+<span style="color: #008000">print</span>(<span style="color: #BA2121">"Tamaño mediana: "</span>, basket_sizes<span style="color: #666">.</span>median())
+</pre></div>
+
+</div>
+</body></html>

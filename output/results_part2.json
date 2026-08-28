@@ -1,0 +1,97 @@
+{
+  "min_support": 732,
+  "report_rows": [
+    {
+      "k": 1,
+      "candidatos": 4624,
+      "frecuentes": 196
+    },
+    {
+      "k": 2,
+      "candidatos": 19110,
+      "frecuentes": 31
+    },
+    {
+      "k": 3,
+      "candidatos": 18,
+      "frecuentes": 0
+    }
+  ],
+  "total_frequent": 227,
+  "L1_count": 196,
+  "L2_count": 31,
+  "n_rules": 8,
+  "strongest_rule": {
+    "antecedent": "ROSES REGENCY TEACUP AND SAUCER ",
+    "consequent": "GREEN REGENCY TEACUP AND SAUCER",
+    "lift": 27.296018652071684,
+    "confidence": 0.7046728971962617,
+    "support": 0.020576356292981116
+  },
+  "rules_table": [
+    {
+      "antecedent_desc": "ROSES REGENCY TEACUP AND SAUCER ",
+      "consequent_desc": "GREEN REGENCY TEACUP AND SAUCER",
+      "support": 0.020576356292981116,
+      "confidence": 0.7046728971962617,
+      "lift": 27.296018652071684,
+      "interest": 0.6788569382398159
+    },
+    {
+      "antecedent_desc": "GREEN REGENCY TEACUP AND SAUCER",
+      "consequent_desc": "ROSES REGENCY TEACUP AND SAUCER ",
+      "support": 0.020576356292981116,
+      "confidence": 0.7970401691331924,
+      "lift": 27.296018652071684,
+      "interest": 0.767840300123259
+    },
+    {
+      "antecedent_desc": "SWEETHEART CERAMIC TRINKET BOX",
+      "consequent_desc": "STRAWBERRY CERAMIC TRINKET BOX",
+      "support": 0.023387184805152277,
+      "confidence": 0.7318531169940222,
+      "lift": 14.166944331288406,
+      "interest": 0.6801939094839251
+    },
+    {
+      "antecedent_desc": "WOODEN FRAME ANTIQUE WHITE ",
+      "consequent_desc": "WOODEN PICTURE FRAME WHITE FINISH",
+      "support": 0.02709857002510643,
+      "confidence": 0.560067681895093,
+      "lift": 12.378238923621103,
+      "interest": 0.514821529728299
+    },
+    {
+      "antecedent_desc": "WOODEN PICTURE FRAME WHITE FINISH",
+      "consequent_desc": "WOODEN FRAME ANTIQUE WHITE ",
+      "support": 0.02709857002510643,
+      "confidence": 0.5989143546441495,
+      "lift": 12.378238923621103,
+      "interest": 0.5505298987987178
+    },
+    {
+      "antecedent_desc": "JUMBO BAG STRAWBERRY",
+      "consequent_desc": "JUMBO BAG RED RETROSPOT",
+      "support": 0.025979696539679076,
+      "confidence": 0.6287978863936592,
+      "lift": 7.067996855524309,
+      "interest": 0.5398337995035817
+    },
+    {
+      "antecedent_desc": "JUMBO BAG PINK POLKADOT",
+      "consequent_desc": "JUMBO BAG RED RETROSPOT",
+      "support": 0.02903613142670014,
+      "confidence": 0.6021505376344086,
+      "lift": 6.7684675770169545,
+      "interest": 0.5131864507443311
+    },
+    {
+      "antecedent_desc": "RED HANGING HEART T-LIGHT HOLDER",
+      "consequent_desc": "WHITE HANGING HEART T-LIGHT HOLDER",
+      "support": 0.03151948477240476,
+      "confidence": 0.7081545064377682,
+      "lift": 5.301248975261609,
+      "interest": 0.5745719281166243
+    }
+  ]
+}

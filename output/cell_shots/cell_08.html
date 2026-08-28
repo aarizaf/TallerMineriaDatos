@@ -1,0 +1,60 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  body { margin:0; padding:0; background:white; font-family: Consolas, Menlo, monospace; }
+  .cellbox {
+    border: 1px solid #cfd8dc;
+    border-left: 4px solid #4C72B0;
+    border-radius: 4px;
+    width: fit-content;
+    max-width: 1400px;
+  }
+  .prompt {
+    background:#f5f7fa;
+    color:#4C72B0;
+    font-size:13px;
+    padding:4px 10px;
+    border-bottom:1px solid #e0e6ec;
+    font-family: Consolas, Menlo, monospace;
+  }
+  pre {
+    margin:0;
+    padding:10px 14px;
+    font-size:14px;
+    line-height:1.4;
+    white-space: pre;
+  }
+</style></head>
+<body>
+<div class="cellbox">
+  <div class="prompt">In [8]:</div>
+  <div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%;"><span></span>df_clean <span style="color: #666">=</span> df<span style="color: #666">.</span>copy()
+df_clean[<span style="color: #BA2121">"Invoice"</span>] <span style="color: #666">=</span> df_clean[<span style="color: #BA2121">"Invoice"</span>]<span style="color: #666">.</span>astype(<span style="color: #008000">str</span>)
+df_clean[<span style="color: #BA2121">"StockCode"</span>] <span style="color: #666">=</span> df_clean[<span style="color: #BA2121">"StockCode"</span>]<span style="color: #666">.</span>astype(<span style="color: #008000">str</span>)
+
+<span style="color: #3D7B7B; font-style: italic"># Eliminar cancelaciones (Invoice empieza con 'C')</span>
+df_clean <span style="color: #666">=</span> df_clean[<span style="color: #666">~</span>df_clean[<span style="color: #BA2121">"Invoice"</span>]<span style="color: #666">.</span>str<span style="color: #666">.</span>startswith(<span style="color: #BA2121">"C"</span>)]
+
+<span style="color: #3D7B7B; font-style: italic"># Conservar solo Quantity &gt; 0</span>
+df_clean <span style="color: #666">=</span> df_clean[df_clean[<span style="color: #BA2121">"Quantity"</span>] <span style="color: #666">&gt;</span> <span style="color: #666">0</span>]
+
+<span style="color: #3D7B7B; font-style: italic"># Eliminar stock codes no-producto</span>
+non_product_codes <span style="color: #666">=</span> {
+    <span style="color: #BA2121">"POST"</span>, <span style="color: #BA2121">"D"</span>, <span style="color: #BA2121">"DOT"</span>, <span style="color: #BA2121">"M"</span>, <span style="color: #BA2121">"S"</span>, <span style="color: #BA2121">"AMAZONFEE"</span>,
+    <span style="color: #BA2121">"BANK CHARGES"</span>, <span style="color: #BA2121">"PADS"</span>, <span style="color: #BA2121">"CRUK"</span>, <span style="color: #BA2121">"C2"</span>, <span style="color: #BA2121">"m"</span>
+}
+df_clean <span style="color: #666">=</span> df_clean[<span style="color: #666">~</span>df_clean[<span style="color: #BA2121">"StockCode"</span>]<span style="color: #666">.</span>isin(non_product_codes)]
+
+<span style="color: #3D7B7B; font-style: italic"># Eliminar stock codes de longitud 1</span>
+df_clean <span style="color: #666">=</span> df_clean[df_clean[<span style="color: #BA2121">"StockCode"</span>]<span style="color: #666">.</span>str<span style="color: #666">.</span>len() <span style="color: #666">!=</span> <span style="color: #666">1</span>]
+
+<span style="color: #3D7B7B; font-style: italic"># Eliminar filas con Customer ID nulo</span>
+df_clean <span style="color: #666">=</span> df_clean[df_clean[<span style="color: #BA2121">"Customer ID"</span>]<span style="color: #666">.</span>notna()]
+
+<span style="color: #008000">print</span>(<span style="color: #BA2121">"Filas tras limpieza:      "</span>, <span style="color: #008000">len</span>(df_clean))
+<span style="color: #008000">print</span>(<span style="color: #BA2121">"StockCodes únicos:        "</span>, df_clean[<span style="color: #BA2121">"StockCode"</span>]<span style="color: #666">.</span>nunique())
+<span style="color: #008000">print</span>(<span style="color: #BA2121">"Invoices únicos:          "</span>, df_clean[<span style="color: #BA2121">"Invoice"</span>]<span style="color: #666">.</span>nunique())
+</pre></div>
+
+</div>
+</body></html>

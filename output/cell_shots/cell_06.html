@@ -1,0 +1,38 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  body { margin:0; padding:0; background:white; font-family: Consolas, Menlo, monospace; }
+  .cellbox {
+    border: 1px solid #cfd8dc;
+    border-left: 4px solid #4C72B0;
+    border-radius: 4px;
+    width: fit-content;
+    max-width: 1400px;
+  }
+  .prompt {
+    background:#f5f7fa;
+    color:#4C72B0;
+    font-size:13px;
+    padding:4px 10px;
+    border-bottom:1px solid #e0e6ec;
+    font-family: Consolas, Menlo, monospace;
+  }
+  pre {
+    margin:0;
+    padding:10px 14px;
+    font-size:14px;
+    line-height:1.4;
+    white-space: pre;
+  }
+</style></head>
+<body>
+<div class="cellbox">
+  <div class="prompt">In [6]:</div>
+  <div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%;"><span></span><span style="color: #3D7B7B; font-style: italic"># b) Invoices que empiezan con 'C' (cancelaciones)</span>
+invoice_str <span style="color: #666">=</span> df[<span style="color: #BA2121">"Invoice"</span>]<span style="color: #666">.</span>astype(<span style="color: #008000">str</span>)
+cancelaciones <span style="color: #666">=</span> invoice_str<span style="color: #666">.</span>str<span style="color: #666">.</span>startswith(<span style="color: #BA2121">"C"</span>)
+<span style="color: #008000">print</span>(<span style="color: #BA2121">"b) Filas con Invoice que empieza con 'C':"</span>, cancelaciones<span style="color: #666">.</span>sum())
+</pre></div>
+
+</div>
+</body></html>
